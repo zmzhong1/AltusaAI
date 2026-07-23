@@ -1,0 +1,16 @@
+{
+  "name": "altusa-ai-wms-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fictional, self-contained warehouse operations demo.",
+  "scripts": {
+    "demo": "firebase emulators:start --only hosting --project altusa-wms-demo-local",
+    "generate": "node scripts/generate-demo-data.js && node scripts/reembed-data.js",
+    "check:js": "node scripts/check-html-js.js",
+    "security": "node scripts/public-safety-check.js",
+    "validate": "node scripts/check-html-js.js && node scripts/validate-demo.js && node scripts/public-safety-check.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

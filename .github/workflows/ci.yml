@@ -1,4 +1,4 @@
-name: Public release safety
+name: Public safety and demo validation
 
 on:
   push:
@@ -17,21 +17,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Reject private planning files
-        shell: bash
-        run: |
-          forbidden=(
-            "_planning"
-            "DEMO-SPEC.md"
-            "FEATURE-COVERAGE.md"
-            "HANDOFF.md"
-          )
-          for path in "${forbidden[@]}"; do
-            if [[ -e "$path" ]]; then
-              echo "Public release contains prohibited path: $path" >&2
-              exit 1
-            fi
-          done
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate demo and public-safety rules
+        run: npm run validate
 
       - name: Scan repository history for secrets
         uses: gitleaks/gitleaks-action@v2

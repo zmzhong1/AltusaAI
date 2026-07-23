@@ -4,8 +4,11 @@ Altusa WMS is a self-guided warehouse operations prototype built for owner-opera
 wholesalers and their teams. It demonstrates how inventory, bin locations, pick-list
 intake, picking, review, and order history can fit into one understandable workflow.
 
-[Explore the feature tour](styles/features.html) ·
-[Open the interactive demo](styles/index-minimal.html)
+[Launch the live demo](https://altusa-ai-wms-demo.web.app/) ·
+[Explore the live feature tour](https://altusa-ai-wms-demo.web.app/features)
+
+[View the demo source](styles/index-minimal.html) ·
+[View the feature-tour source](styles/features.html)
 
 > This repository contains fictional data only. Every SKU uses the `DEMO-` prefix,
 > all people and customers are invented, and every interaction resets when the page
