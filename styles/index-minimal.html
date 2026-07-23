@@ -803,6 +803,36 @@
   .section-heading{
     margin:10px 0 16px; font-size:24px; font-weight:780; letter-spacing:-.035em;
   }
+  .dash-section-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
+    margin:10px 0 8px; flex-wrap:wrap;
+  }
+  .dash-section-head .section-heading{ margin:0; }
+  .dash-filter-group{
+    display:flex; align-items:center; gap:7px; max-width:100%; overflow-x:auto;
+    padding:3px; scrollbar-width:none;
+  }
+  .dash-filter-group::-webkit-scrollbar{ display:none; }
+  .dash-filter-btn{
+    display:inline-flex; align-items:center; gap:7px; min-height:36px; padding:7px 11px;
+    border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.72);
+    color:var(--text-muted); font-size:11.5px; font-weight:750; white-space:nowrap; cursor:pointer;
+    transition:color var(--dur) var(--ease),background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+  }
+  .dash-filter-btn:hover{ color:var(--text); border-color:var(--border-strong); }
+  .dash-filter-btn[aria-pressed="true"]{
+    color:var(--accent); border-color:rgba(var(--accent-rgb),.26);
+    background:rgba(var(--accent-rgb),.09);
+  }
+  .dash-filter-count{
+    min-width:20px; height:20px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid var(--border); border-radius:999px; background:var(--surface);
+    color:var(--text-muted); font-size:10px; font-variant-numeric:tabular-nums;
+  }
+  .dash-filter-btn[aria-pressed="true"] .dash-filter-count{
+    color:#fff; border-color:var(--accent); background:var(--accent);
+  }
+  .dash-filter-summary{ min-height:18px; margin:0 0 16px; color:var(--text-muted); font-size:12px; }
   .toolbar{
     width:min(calc(100% - 40px),1140px); margin:18px auto 0; padding:13px 14px;
     border:1px solid var(--border); border-radius:14px; background:rgba(255,255,255,.78);
@@ -959,6 +989,7 @@
     .topbar{ background:rgba(11,12,15,.88); border-bottom-color:rgba(40,43,51,.9); box-shadow:none; }
     .pill-demo{ color:#6ee7b7; border-color:rgba(52,211,153,.24); background:rgba(52,211,153,.10); }
     .view-toggle, .toolbar, .kanban-col{ background:rgba(22,24,29,.78); }
+    .dash-filter-btn{ background:rgba(22,24,29,.78); }
     .progress-track{ background:#242630; }
     .login-card{ box-shadow:0 30px 90px rgba(0,0,0,.45); }
   }
@@ -970,6 +1001,8 @@
     .stat-strip{ padding:0 14px; gap:8px; }
     .toolbar{ width:calc(100% - 28px); }
     .main{ padding-left:14px; padding-right:14px; }
+    .dash-section-head{ align-items:flex-start; }
+    .dash-filter-group{ width:100%; margin-left:-3px; }
     .login-card{ grid-template-columns:1fr; max-width:430px; }
     .login-intro{ min-height:auto; padding:27px 28px 30px; }
     .login-brand{ margin-bottom:28px; }
@@ -1055,7 +1088,11 @@
     <p class="dash-greeting" id="dashGreeting"></p>
     <section class="stat-strip" id="dashStats" aria-label="Order stats"></section>
     <main class="main">
-      <h2 class="section-heading">Active work</h2>
+      <div class="dash-section-head">
+        <h2 class="section-heading">Workflow orders</h2>
+        <div class="dash-filter-group" id="dashFilters" role="group" aria-label="Filter dashboard orders by workflow state"></div>
+      </div>
+      <p class="dash-filter-summary" id="dashFilterSummary" role="status" aria-live="polite"></p>
       <div class="dash-feed" id="dashFeed"></div>
       <section class="roadmap" aria-labelledby="roadmapTitle">
         <div class="roadmap-head">
@@ -1364,7 +1401,7 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
   DATA.orders.forEach(function(o){ ordersById[o.id] = o; });
   var pickQueues = {}; // orderId -> array of pending line indices (session-only, supports Skip requeue)
 
-  function statusLabel(s){ return { new:'New', picking:'Picking', review:'Review', completed:'Completed' }[s] || s; }
+  function statusLabel(s){ return { new:'New', picking:'In picking', review:'Awaiting review', completed:'Completed' }[s] || s; }
 
   function formatDisplayTime(value){
     return String(value || '')
@@ -1464,7 +1501,7 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
   var state = {
     section:'dashboard', view:'map', search:'', drill:null, selectedSku:null,
     orderSearch:'', orderMonth:'all', detailOrderId:null, editingOrderId:null,
-    recentSearches:[]
+    recentSearches:[], dashboardFilter:'all'
   };
   var lastFocusEl = null;
 
@@ -1491,6 +1528,8 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
   var sectionInventory = document.getElementById('sectionInventory');
   var dashGreeting = document.getElementById('dashGreeting');
   var dashStats = document.getElementById('dashStats');
+  var dashFilters = document.getElementById('dashFilters');
+  var dashFilterSummary = document.getElementById('dashFilterSummary');
   var dashFeed = document.getElementById('dashFeed');
   var orderSearchInput = document.getElementById('orderSearchInput');
   var orderMonthFilter = document.getElementById('orderMonthFilter');
@@ -1906,15 +1945,46 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
       tileHtml('Active Pickers', s.activePickers) +
       tileHtml('Units Picked Today', fmt(s.unitsPickedToday));
 
-    var active = DATA.orders.filter(function(o){ return o.status === 'new' || o.status === 'picking' || o.status === 'review'; });
-    var statusOrder = { new:0, picking:1, review:2 };
-    active.sort(function(a,b){
-      if ((a.priority === 'rush') !== (b.priority === 'rush')) return a.priority === 'rush' ? -1 : 1;
-      return statusOrder[a.status] - statusOrder[b.status];
+    var filterDefs = [
+      { key:'all', label:'All', count:DATA.orders.length },
+      { key:'picking', label:'In picking', count:DATA.orders.filter(function(o){ return o.status === 'picking'; }).length },
+      { key:'review', label:'Awaiting review', count:DATA.orders.filter(function(o){ return o.status === 'review'; }).length },
+      { key:'completed', label:'Completed', count:DATA.orders.filter(function(o){ return o.status === 'completed'; }).length }
+    ];
+    dashFilters.innerHTML = filterDefs.map(function(filter){
+      var pressed = state.dashboardFilter === filter.key;
+      return '<button type="button" class="dash-filter-btn" data-dashboard-filter="' + filter.key + '" aria-pressed="' + String(pressed) + '">' +
+        '<span>' + filter.label + '</span><span class="dash-filter-count">' + filter.count + '</span>' +
+      '</button>';
+    }).join('');
+
+    var filtered = DATA.orders.filter(function(o){
+      return state.dashboardFilter === 'all' || o.status === state.dashboardFilter;
     });
-    dashFeed.innerHTML = active.length ? active.map(orderSummaryHtml).join('') : '<p class="empty-note">No active orders right now.</p>';
+    var statusOrder = { new:0, picking:1, review:2, completed:3 };
+    filtered.sort(function(a,b){
+      if (statusOrder[a.status] !== statusOrder[b.status]) return statusOrder[a.status] - statusOrder[b.status];
+      if ((a.priority === 'rush') !== (b.priority === 'rush')) return a.priority === 'rush' ? -1 : 1;
+      return 0;
+    });
+    var summaryByFilter = {
+      all:filtered.length + ' orders shown · includes ' + DATA.orders.filter(function(o){ return o.status === 'new'; }).length + ' new orders',
+      picking:filtered.length + ' orders currently being picked',
+      review:filtered.length + ' orders waiting for manager review',
+      completed:filtered.length + ' completed orders · completion time shown on every card'
+    };
+    dashFilterSummary.textContent = summaryByFilter[state.dashboardFilter] || (filtered.length + ' orders shown');
+    dashFeed.innerHTML = filtered.length ? filtered.map(orderSummaryHtml).join('') : '<p class="empty-note">No orders in this workflow state.</p>';
     bindOrderRowClicks(dashFeed);
   }
+  dashFilters.addEventListener('click', function(event){
+    var button = event.target.closest('[data-dashboard-filter]');
+    if (!button) return;
+    state.dashboardFilter = button.getAttribute('data-dashboard-filter');
+    renderDashboard();
+    var activeButton = dashFilters.querySelector('[data-dashboard-filter="' + state.dashboardFilter + '"]');
+    if (activeButton) activeButton.focus();
+  });
 
   /* ---------- Orders board (kanban) ---------- */
   (function buildMonthFilter(){
