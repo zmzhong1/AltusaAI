@@ -1,4 +1,5 @@
 .github/workflows/ci.yml
+.firebaserc
 .gitignore
 LICENSE
 README.md
