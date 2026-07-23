@@ -1,0 +1,6 @@
+.DS_Store
+._*
+*.log
+.firebase/
+node_modules/
+.playwright-cli/
