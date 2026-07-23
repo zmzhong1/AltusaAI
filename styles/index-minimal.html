@@ -734,41 +734,296 @@
     .toolbar-actions{ width:100%; }
     .toolbar-select{ flex:1; min-width:0; }
   }
+
+  /* ---------- Shared Altusa visual system ---------- */
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(circle at 8% 4%,rgba(var(--accent-rgb),.10),transparent 25rem),
+      radial-gradient(circle at 92% 10%,rgba(8,122,85,.07),transparent 22rem);
+    background-attachment:fixed;
+  }
+  .app{ isolation:isolate; }
+  .section-body:not([hidden]){ animation:sectionEnter .34s cubic-bezier(.16,1,.3,1); }
+  @keyframes sectionEnter{
+    from{ opacity:0; transform:translateY(7px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .topbar{
+    position:sticky; top:0; z-index:30; min-height:70px; padding:12px 24px;
+    background:rgba(247,247,251,.9); border-bottom-color:rgba(229,229,238,.9);
+    box-shadow:0 1px 0 rgba(255,255,255,.75);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  }
+  .brand-mark{ font-size:19px; font-weight:800; letter-spacing:-.035em; }
+  .brand-mark sub{
+    margin-left:5px; color:var(--text-muted); font-size:9px; font-weight:800;
+    letter-spacing:.12em; text-transform:uppercase; vertical-align:3px;
+  }
+  .brand-company{ font-size:12.5px; font-weight:600; }
+  .pill-demo{
+    color:#087a55; border-color:rgba(8,122,85,.2); background:#e8f7f1;
+    padding:4px 9px;
+  }
+  .view-toggle{
+    padding:4px; border-color:var(--border); border-radius:12px;
+    background:rgba(255,255,255,.7);
+  }
+  .view-toggle button{
+    min-height:34px; padding:7px 14px; border-radius:8px; font-size:12.5px; font-weight:750;
+  }
+  .view-toggle button[aria-pressed="true"]{
+    color:var(--accent); background:rgba(var(--accent-rgb),.10);
+    box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),.08);
+  }
+
+  .dash-greeting{
+    padding:24px 20px 0; font-size:14px; line-height:1.5;
+  }
+  .stat-strip{
+    width:min(100%,1180px); margin:16px auto 0; padding:0 20px;
+    gap:10px; background:transparent; border:0;
+  }
+  .tile{
+    min-height:78px; justify-content:center; padding:14px 16px;
+    border:1px solid var(--border); border-radius:12px;
+    box-shadow:0 8px 24px rgba(26,24,70,.055);
+  }
+  button.tile[aria-pressed="true"]{
+    background:rgba(var(--accent-rgb),.08);
+    border-color:rgba(var(--accent-rgb),.3);
+  }
+  button.tile[aria-pressed="true"]::after{
+    left:10px; top:auto; right:10px; bottom:-1px; width:auto; height:3px; border-radius:3px 3px 0 0;
+  }
+  .tile-label{ font-size:10px; font-weight:800; letter-spacing:.09em; }
+  .tile-value{ font-size:clamp(19px,4.2vw,24px); font-weight:750; letter-spacing:-.03em; }
+  .main{ max-width:1180px; padding:24px 20px 48px; }
+  .section-heading{
+    margin:10px 0 16px; font-size:24px; font-weight:780; letter-spacing:-.035em;
+  }
+  .toolbar{
+    width:min(calc(100% - 40px),1140px); margin:18px auto 0; padding:13px 14px;
+    border:1px solid var(--border); border-radius:14px; background:rgba(255,255,255,.78);
+    box-shadow:0 8px 26px rgba(26,24,70,.05);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
+  .search-input, .toolbar-select, .compact-input, .compact-select, .picker-select{
+    border-radius:10px;
+  }
+
+  .order-card{
+    padding:15px 16px; border-radius:14px;
+    box-shadow:0 7px 22px rgba(26,24,70,.055);
+    transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+  }
+  .order-card:hover{
+    border-color:rgba(var(--accent-rgb),.3); transform:translateY(-2px);
+    box-shadow:0 13px 30px rgba(26,24,70,.10);
+  }
+  .order-card.has-discrepancy{
+    border-left-width:4px; border-left-color:var(--accent);
+  }
+  .order-id{ color:var(--accent); font-weight:800; }
+  .order-customer{ margin-top:5px; font-size:15px; font-weight:700; }
+  .chip-rush{
+    border-radius:999px; padding:3px 8px;
+    background:linear-gradient(110deg,var(--accent),#7c76f0);
+  }
+  .progress-track{ height:7px; border:0; background:#eeedf6; }
+  .progress-fill{ background:linear-gradient(90deg,var(--accent),#7c76f0); }
+  .avatar{
+    width:25px; height:25px; color:var(--accent); border-color:rgba(var(--accent-rgb),.2);
+    background:rgba(var(--accent-rgb),.08);
+  }
+  .kanban{ gap:16px; }
+  .kanban-col{
+    padding:13px; border-radius:16px; background:rgba(255,255,255,.58);
+    box-shadow:0 12px 32px rgba(26,24,70,.045);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  }
+  .kanban-col-head{ padding:2px 3px; font-weight:800; letter-spacing:.08em; }
+
+  .btn-primary{
+    border-radius:10px; font-weight:750;
+    box-shadow:0 8px 20px rgba(var(--accent-rgb),.18);
+    transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),opacity var(--dur) var(--ease);
+  }
+  .btn-primary:hover{
+    opacity:1; transform:translateY(-1px); box-shadow:0 12px 26px rgba(var(--accent-rgb),.24);
+  }
+  .btn-ghost{ border-radius:10px; font-weight:700; }
+  .detail-card, .order-extra, .line-table, .pick-card{
+    border-radius:14px; box-shadow:0 8px 24px rgba(26,24,70,.045);
+  }
+  .stage-flow{ gap:10px; }
+  .stage{ position:relative; min-height:82px; border-radius:12px; padding:12px; }
+  .stage--active{
+    background:rgba(var(--accent-rgb),.05);
+    box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),.24),0 8px 20px rgba(var(--accent-rgb),.08);
+  }
+  .stage--complete{ background:rgba(var(--accent-rgb),.08); }
+  .stage-label{ font-size:11.5px; }
+
+  .roadmap{
+    position:relative; overflow:hidden; margin-top:36px; padding:24px;
+    color:#fff; border:1px solid #2c2d39; border-radius:20px;
+    background:#171821; box-shadow:0 22px 60px rgba(23,24,33,.18);
+  }
+  .roadmap::before{
+    position:absolute; width:300px; height:300px; top:-190px; right:-90px;
+    border-radius:50%; background:rgba(124,118,240,.22); filter:blur(2px); content:"";
+  }
+  .roadmap-head, .roadmap-grid{ position:relative; z-index:1; }
+  .roadmap-head h2{ color:#fff; letter-spacing:-.03em; }
+  .roadmap .panel-sub{ color:#b8bac7; }
+  .roadmap-kicker{ color:#d8d9e3; border-color:#454653; background:#22232d; }
+  .roadmap-card{ border-color:#343540; background:#22232d; }
+  .roadmap-card strong{ color:#fff; }
+  .roadmap-card span{ color:#b8bac7; }
+
+  .login-screen{
+    position:relative; overflow:hidden; padding:34px 20px;
+    background:
+      radial-gradient(circle at 14% 16%,rgba(var(--accent-rgb),.18),transparent 30rem),
+      radial-gradient(circle at 86% 12%,rgba(8,122,85,.10),transparent 25rem),
+      var(--bg);
+  }
+  .login-card{
+    position:relative; z-index:1; width:min(100%,860px); max-width:none;
+    display:grid; grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);
+    align-items:stretch; overflow:hidden; border:1px solid var(--border); border-radius:24px;
+    background:var(--surface); box-shadow:0 30px 90px rgba(26,24,70,.17);
+  }
+  .login-intro{
+    position:relative; display:flex; flex-direction:column; justify-content:space-between;
+    min-height:620px; overflow:hidden; padding:42px; color:#fff; background:#171821;
+  }
+  .login-intro::after{
+    position:absolute; right:-105px; bottom:-115px; width:330px; height:330px;
+    border-radius:50%; background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.18),rgba(124,118,240,.28) 36%,transparent 68%);
+    content:"";
+  }
+  .login-intro-copy, .login-intro-foot{ position:relative; z-index:1; }
+  .login-brand{ margin-bottom:42px; text-align:left; }
+  .login-mark{ color:#fff; font-size:27px; letter-spacing:-.04em; }
+  .login-mark span{ color:#aeb0be; font-size:10px; font-weight:800; letter-spacing:.13em; vertical-align:3px; }
+  .login-company{ color:#aeb0be; font-size:10px; text-align:left; }
+  .login-eyebrow{
+    margin:0 0 13px; color:#9e99ff; font-size:10px; font-weight:800;
+    letter-spacing:.13em; text-transform:uppercase;
+  }
+  .login-headline{
+    max-width:300px; margin:0; color:#fff; font-size:clamp(34px,5vw,52px);
+    line-height:.98; letter-spacing:-.055em;
+  }
+  .login-copy{ max-width:310px; margin:20px 0 0; color:#b8bac7; font-size:14px; line-height:1.65; }
+  .login-feature-link{
+    position:relative; z-index:1; align-self:flex-start; margin-top:28px; color:#fff;
+    font-size:12.5px; text-decoration:none;
+  }
+  .login-feature-link::after{ content:""; position:absolute; left:0; right:0; bottom:-4px; height:1px; background:#686a78; }
+  .login-intro-foot{ color:#aeb0be; font-size:11px; line-height:1.5; }
+  .login-access{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-width:0; padding:34px 44px;
+  }
+  .login-label{ margin-bottom:16px; color:var(--text); font-size:11px; letter-spacing:.11em; }
+  .pin-dots{ margin-bottom:24px; }
+  .keypad{ max-width:290px; gap:12px; }
+  .key-btn{
+    width:62px; height:62px; border-color:var(--border); background:var(--surface-alt);
+    box-shadow:none; font-weight:700;
+  }
+  .key-btn:hover{
+    border-color:rgba(var(--accent-rgb),.35); background:rgba(var(--accent-rgb),.06);
+    transform:translateY(-1px);
+  }
+  .login-demo-pins{ max-width:340px; margin-top:25px; padding-top:17px; }
+  .login-demo-pins li{
+    padding:8px 11px; border-radius:10px; background:var(--surface);
+    box-shadow:0 4px 14px rgba(26,24,70,.035);
+  }
+  .ldp-role{
+    padding:2px 6px; border-radius:999px; background:var(--surface-alt);
+    font-size:10px; font-weight:700;
+  }
+
+  @media (prefers-color-scheme:dark){
+    body{
+      background-image:
+        radial-gradient(circle at 8% 4%,rgba(var(--accent-rgb),.12),transparent 25rem),
+        radial-gradient(circle at 92% 10%,rgba(52,211,153,.06),transparent 22rem);
+    }
+    .topbar{ background:rgba(11,12,15,.88); border-bottom-color:rgba(40,43,51,.9); box-shadow:none; }
+    .pill-demo{ color:#6ee7b7; border-color:rgba(52,211,153,.24); background:rgba(52,211,153,.10); }
+    .view-toggle, .toolbar, .kanban-col{ background:rgba(22,24,29,.78); }
+    .progress-track{ background:#242630; }
+    .login-card{ box-shadow:0 30px 90px rgba(0,0,0,.45); }
+  }
+  @media (max-width:760px){
+    .topbar{ padding:11px 14px; }
+    .topbar-right{ width:100%; gap:9px; }
+    .view-toggle{ order:3; width:100%; }
+    .view-toggle button{ flex:1; }
+    .stat-strip{ padding:0 14px; gap:8px; }
+    .toolbar{ width:calc(100% - 28px); }
+    .main{ padding-left:14px; padding-right:14px; }
+    .login-card{ grid-template-columns:1fr; max-width:430px; }
+    .login-intro{ min-height:auto; padding:27px 28px 30px; }
+    .login-brand{ margin-bottom:28px; }
+    .login-headline{ max-width:340px; font-size:36px; }
+    .login-copy{ margin-top:14px; }
+    .login-intro-foot{ display:none; }
+    .login-feature-link{ margin-top:20px; }
+    .login-access{ padding:28px 24px 30px; }
+  }
 </style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen">
   <div class="login-card">
-    <div class="login-brand">
-      <h1 class="login-mark">Altusa<span>WMS</span></h1>
-      <p class="login-company">Cabana Party Wholesale</p>
+    <div class="login-intro">
+      <div class="login-intro-copy">
+        <div class="login-brand">
+          <h1 class="login-mark">Altusa<span>WMS</span></h1>
+          <p class="login-company">Cabana Party Wholesale</p>
+        </div>
+        <p class="login-eyebrow">Interactive warehouse prototype</p>
+        <h2 class="login-headline">See the floor. Move the work.</h2>
+        <p class="login-copy">Find stock, assign bins, pick customer orders, review exceptions, and preserve every handoff in one focused workflow.</p>
+        <a class="login-feature-link" href="features.html">Explore the guided feature tour →</a>
+      </div>
+      <p class="login-intro-foot">No signup · Fictional data · Every change resets on reload</p>
     </div>
-    <p id="loginError" class="login-error" role="alert" hidden></p>
-    <p class="login-label">Enter your PIN</p>
-    <div class="pin-dots" id="pinDots" aria-hidden="true"></div>
-    <div class="keypad" id="loginKeypad" role="group" aria-label="PIN keypad">
-      <button type="button" class="key-btn" data-digit="1" aria-label="Digit 1">1</button>
-      <button type="button" class="key-btn" data-digit="2" aria-label="Digit 2">2</button>
-      <button type="button" class="key-btn" data-digit="3" aria-label="Digit 3">3</button>
-      <button type="button" class="key-btn" data-digit="4" aria-label="Digit 4">4</button>
-      <button type="button" class="key-btn" data-digit="5" aria-label="Digit 5">5</button>
-      <button type="button" class="key-btn" data-digit="6" aria-label="Digit 6">6</button>
-      <button type="button" class="key-btn" data-digit="7" aria-label="Digit 7">7</button>
-      <button type="button" class="key-btn" data-digit="8" aria-label="Digit 8">8</button>
-      <button type="button" class="key-btn" data-digit="9" aria-label="Digit 9">9</button>
-      <button type="button" class="key-btn key-btn--sub" data-action="clear" aria-label="Clear PIN">Clear</button>
-      <button type="button" class="key-btn" data-digit="0" aria-label="Digit 0">0</button>
-      <button type="button" class="key-btn key-btn--sub" data-action="backspace" aria-label="Backspace, delete last digit">⌫</button>
+    <div class="login-access">
+      <p id="loginError" class="login-error" role="alert" hidden></p>
+      <p class="login-label">Enter your PIN</p>
+      <div class="pin-dots" id="pinDots" aria-hidden="true"></div>
+      <div class="keypad" id="loginKeypad" role="group" aria-label="PIN keypad">
+        <button type="button" class="key-btn" data-digit="1" aria-label="Digit 1">1</button>
+        <button type="button" class="key-btn" data-digit="2" aria-label="Digit 2">2</button>
+        <button type="button" class="key-btn" data-digit="3" aria-label="Digit 3">3</button>
+        <button type="button" class="key-btn" data-digit="4" aria-label="Digit 4">4</button>
+        <button type="button" class="key-btn" data-digit="5" aria-label="Digit 5">5</button>
+        <button type="button" class="key-btn" data-digit="6" aria-label="Digit 6">6</button>
+        <button type="button" class="key-btn" data-digit="7" aria-label="Digit 7">7</button>
+        <button type="button" class="key-btn" data-digit="8" aria-label="Digit 8">8</button>
+        <button type="button" class="key-btn" data-digit="9" aria-label="Digit 9">9</button>
+        <button type="button" class="key-btn key-btn--sub" data-action="clear" aria-label="Clear PIN">Clear</button>
+        <button type="button" class="key-btn" data-digit="0" aria-label="Digit 0">0</button>
+        <button type="button" class="key-btn key-btn--sub" data-action="backspace" aria-label="Backspace, delete last digit">⌫</button>
+      </div>
+      <div class="login-demo-pins">
+        <p class="login-demo-label">Demo PINs</p>
+        <ul>
+          <li><span class="ldp-main"><span class="ldp-name">Alex</span><span class="ldp-role">Staff</span></span><code class="ldp-pin">1471</code><span class="ldp-cap">Pick orders · move inventory between bins</span></li>
+          <li><span class="ldp-main"><span class="ldp-name">Sam</span><span class="ldp-role">Manager</span></span><code class="ldp-pin">2582</code><span class="ldp-cap">Staff access · review/edit/refund orders · import inventory</span></li>
+          <li><span class="ldp-main"><span class="ldp-name">Admin</span><span class="ldp-role">Admin</span></span><code class="ldp-pin">9000</code><span class="ldp-cap">Manager access · all controls in this demo</span></li>
+        </ul>
+      </div>
     </div>
-    <div class="login-demo-pins">
-      <p class="login-demo-label">Demo PINs</p>
-      <ul>
-        <li><span class="ldp-main"><span class="ldp-name">Alex</span><span class="ldp-role">Staff</span></span><code class="ldp-pin">1471</code><span class="ldp-cap">Pick orders · move inventory between bins</span></li>
-        <li><span class="ldp-main"><span class="ldp-name">Sam</span><span class="ldp-role">Manager</span></span><code class="ldp-pin">2582</code><span class="ldp-cap">Staff access · review/edit/refund orders · import inventory</span></li>
-        <li><span class="ldp-main"><span class="ldp-name">Admin</span><span class="ldp-role">Admin</span></span><code class="ldp-pin">9000</code><span class="ldp-cap">Manager access · all controls in this demo</span></li>
-      </ul>
-    </div>
-    <a class="login-feature-link" href="features.html">See what this demo includes →</a>
   </div>
 </div>
 
@@ -1588,7 +1843,10 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
     if (section === 'orders') renderOrdersBoard();
   }
   primaryNavBtns.forEach(function(b){
-    b.addEventListener('click', function(){ setSection(b.getAttribute('data-section')); });
+    b.addEventListener('click', function(){
+      setSection(b.getAttribute('data-section'));
+      window.scrollTo({ top:0, behavior:prefersReducedMotion ? 'auto' : 'smooth' });
+    });
   });
 
   /* ---------- Shared order card + click binding ---------- */
@@ -1703,6 +1961,7 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
     state.detailOrderId = orderId;
     setSection('orderDetail');
     renderOrderDetail();
+    window.scrollTo({ top:0, behavior:prefersReducedMotion ? 'auto' : 'smooth' });
   }
   backToOrdersBtn.addEventListener('click', function(){ setSection('orders'); });
 
