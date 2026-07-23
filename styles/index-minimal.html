@@ -673,7 +673,13 @@
     min-width:18px; height:18px; padding:0 5px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center;
     background:var(--accent); color:#fff; font-size:10px; font-weight:800; margin-left:5px;
   }
-  .recent-searches{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; padding:0 20px 12px; background:var(--surface); }
+  .recent-searches{
+    display:flex; align-items:center; gap:7px; flex-wrap:wrap;
+    width:min(calc(100% - 40px),1140px); margin:0 auto 18px; padding:10px 14px 12px;
+    border:1px solid var(--border); border-top:0; border-radius:0 0 14px 14px;
+    background:rgba(255,255,255,.78); box-shadow:0 12px 26px rgba(26,24,70,.05);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
   .recent-label{ font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; }
   .recent-chip{
     border:1px solid var(--border); border-radius:999px; background:var(--surface-alt); color:var(--text-muted);
@@ -839,6 +845,9 @@
     box-shadow:0 8px 26px rgba(26,24,70,.05);
     backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   }
+  .inventory-toolbar.has-recent-searches{
+    border-radius:14px 14px 0 0; box-shadow:none;
+  }
   .search-input, .toolbar-select, .compact-input, .compact-select, .picker-select{
     border-radius:10px;
   }
@@ -988,7 +997,7 @@
     }
     .topbar{ background:rgba(11,12,15,.88); border-bottom-color:rgba(40,43,51,.9); box-shadow:none; }
     .pill-demo{ color:#6ee7b7; border-color:rgba(52,211,153,.24); background:rgba(52,211,153,.10); }
-    .view-toggle, .toolbar, .kanban-col{ background:rgba(22,24,29,.78); }
+    .view-toggle, .toolbar, .kanban-col, .recent-searches{ background:rgba(22,24,29,.78); }
     .dash-filter-btn{ background:rgba(22,24,29,.78); }
     .progress-track{ background:#242630; }
     .login-card{ box-shadow:0 30px 90px rgba(0,0,0,.45); }
@@ -1000,6 +1009,7 @@
     .view-toggle button{ flex:1; }
     .stat-strip{ padding:0 14px; gap:8px; }
     .toolbar{ width:calc(100% - 28px); }
+    .recent-searches{ width:calc(100% - 28px); }
     .main{ padding-left:14px; padding-right:14px; }
     .dash-section-head{ align-items:flex-start; }
     .dash-filter-group{ width:100%; margin-left:-3px; }
@@ -1143,7 +1153,7 @@
 
     <section class="stat-strip" id="statStrip" aria-label="Warehouse stats"></section>
 
-    <section class="toolbar">
+    <section class="toolbar inventory-toolbar" id="inventoryToolbar">
       <div class="search-wrap">
         <label for="searchInput" class="sr-only">Search items by SKU, name, or barcode</label>
         <input type="search" id="searchInput" class="search-input" placeholder="Search SKU, name, or barcode…" aria-label="Search items by SKU, name, or barcode" autocomplete="off">
@@ -1544,6 +1554,7 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
   var resultCountEl = document.getElementById('resultCount');
   var filterChip = document.getElementById('filterChip');
   var recentSearchesEl = document.getElementById('recentSearches');
+  var inventoryToolbarEl = document.getElementById('inventoryToolbar');
   var scanBarcodeBtn = document.getElementById('scanBarcodeBtn');
   var exportCsvBtn = document.getElementById('exportCsvBtn');
   var mapView = document.getElementById('mapView');
@@ -2363,9 +2374,11 @@ var DATA = {"meta":{"brand":"Altusa WMS","fictionalCompany":"Cabana Party Wholes
     if (!state.recentSearches.length){
       recentSearchesEl.hidden = true;
       recentSearchesEl.innerHTML = '';
+      inventoryToolbarEl.classList.remove('has-recent-searches');
       return;
     }
     recentSearchesEl.hidden = false;
+    inventoryToolbarEl.classList.add('has-recent-searches');
     recentSearchesEl.innerHTML = '<span class="recent-label">Recent searches</span>' + state.recentSearches.map(function(term){
       return '<button type="button" class="recent-chip" data-recent-search="' + escapeHtml(term) + '">' + escapeHtml(term) + '</button>';
     }).join('');
