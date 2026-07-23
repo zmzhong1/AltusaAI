@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "altusa-ai-wms-demo",
     "public": "styles",
     "ignore": [
       "firebase.json",
