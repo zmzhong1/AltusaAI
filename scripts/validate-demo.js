@@ -13,6 +13,7 @@ const root = path.join(__dirname, "..");
 const stylesDir = path.join(root, "styles");
 const styleFiles = ["index-minimal.html", "index-tech.html", "index-warm.html"];
 const supportingPages = ["features.html"];
+const publicPages = [...styleFiles, ...supportingPages];
 const canonical = JSON.parse(fs.readFileSync(path.join(root, "data", "demo-warehouse.json"), "utf8"));
 const failures = [];
 const privateSourcePattern = new RegExp(
@@ -22,6 +23,25 @@ const privateSourcePattern = new RegExp(
 
 function fail(message) {
   failures.push(message);
+}
+
+const demoFavicon = fs.readFileSync(path.join(stylesDir, "favicon.png"));
+const companyFavicon = fs.readFileSync(path.join(root, "website", "public", "favicon.png"));
+if (!demoFavicon.equals(companyFavicon)) fail("styles/favicon.png: must match the company favicon");
+if (demoFavicon.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
+  fail("styles/favicon.png: invalid PNG signature");
+}
+
+for (const file of publicPages) {
+  const html = fs.readFileSync(path.join(stylesDir, file), "utf8");
+  for (const marker of [
+    'name="description"', 'name="application-name"', 'name="theme-color"',
+    'property="og:title"', 'property="og:description"', 'property="og:type"',
+    'name="twitter:card"', 'rel="icon" href="favicon.png"',
+    'rel="apple-touch-icon" href="favicon.png"'
+  ]) {
+    if (!html.includes(marker)) fail(`${file}: missing page metadata "${marker}"`);
+  }
 }
 
 function findJsonEnd(text, start) {
