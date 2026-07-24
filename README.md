@@ -4,9 +4,11 @@ Altusa WMS is a self-guided warehouse operations prototype built for owner-opera
 wholesalers and their teams. It demonstrates how inventory, bin locations, pick-list
 intake, picking, review, and order history can fit into one understandable workflow.
 
+[Visit the Altusa company site](https://altusa-ai-company.web.app/) ·
 [Launch the live demo](https://altusa-ai-wms-demo.web.app/) ·
 [Explore the live feature tour](https://altusa-ai-wms-demo.web.app/features)
 
+[View the company-site source](website/) ·
 [View the demo source](styles/index-minimal.html) ·
 [View the feature-tour source](styles/features.html)
 
@@ -31,6 +33,10 @@ intake, picking, review, and order history can fit into one understandable workf
 
 The separate [feature showcase](styles/features.html) provides a guided product tour,
 working-feature filters, and a clear explanation of prototype boundaries.
+
+The [company website](website/) includes a browser-local blueprint builder. Visitors
+can choose an operating model, identify the largest workflow pressure, select modules,
+and download a tailored 90-day starting scope. The builder submits and stores nothing.
 
 ## Demo roles
 
@@ -72,7 +78,9 @@ flowchart LR
     D --> W["Warm visual variant"]
     M --> H["Firebase static hosting"]
     F["Feature showcase"] --> H
+    C["Company website + blueprint builder"] --> CH["Separate Firebase Hosting site"]
     V["Static validation + secret scanning"] --> H
+    V --> CH
 ```
 
 The demo is intentionally simple:
@@ -101,6 +109,7 @@ The automated gates verify:
 - No known private-source identifiers or prohibited filenames
 - Gitleaks secret scanning in GitHub Actions
 - Firebase routing and security-header configuration
+- The static company-site export, brand metadata, blueprint surface, and runtime audit
 
 Security concerns can be reported using [SECURITY.md](SECURITY.md).
 
@@ -121,11 +130,12 @@ data/       fictional generated warehouse data
 docs/       public architecture and feature documentation
 scripts/    dataset, embedding, validation, and security utilities
 styles/     self-contained demo and feature-tour pages
+website/    Firebase-hosted company page and local blueprint builder
 firebase.json
 ```
 
 ## Contributing
 
-Run `npm run validate` and `npm run security` before opening a pull request. Never
-submit real customer, employee, inventory, facility, credential, or production
-configuration data.
+Run `npm run validate`, `npm run security`, and the checks in `website/` before
+opening a pull request. Never submit real customer, employee, inventory, facility,
+credential, or production configuration data.
