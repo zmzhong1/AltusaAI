@@ -16,6 +16,7 @@ scripts/public-release-files.txt
 scripts/public-safety-check.js
 scripts/reembed-data.js
 scripts/validate-demo.js
+styles/favicon.png
 styles/features.html
 styles/index-minimal.html
 styles/index-tech.html
