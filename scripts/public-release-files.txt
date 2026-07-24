@@ -33,6 +33,7 @@ website/firebase.json
 website/next.config.ts
 website/package-lock.json
 website/package.json
+website/public/favicon.png
 website/public/og.png
 website/tests/firebase-export.test.mjs
 website/tsconfig.json

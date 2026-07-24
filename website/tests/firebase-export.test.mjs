@@ -13,6 +13,8 @@ test("Firebase export contains the branded company site and blueprint builder", 
   assert.match(html, /Download blueprint/);
   assert.match(html, /Private by default/);
   assert.match(html, /https:\/\/altusa-ai-company\.web\.app\/og\.png/);
+  assert.match(html, /rel="icon"[^>]+href="\/favicon\.png"/);
+  assert.match(html, /rel="apple-touch-icon"[^>]+href="\/favicon\.png"/);
   const privateMarkers = [
     "chatgpt\\.site",
     "sites\\.openai\\.com",
@@ -23,4 +25,5 @@ test("Firebase export contains the branded company site and blueprint builder", 
   assert.doesNotMatch(html, new RegExp(privateMarkers.join("|"), "i"));
 
   await access(new URL("../out/og.png", import.meta.url));
+  await access(new URL("../out/favicon.png", import.meta.url));
 });
