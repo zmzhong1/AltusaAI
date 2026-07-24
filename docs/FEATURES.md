@@ -56,3 +56,19 @@ picking experience.
 
 Pack-out photos, forecasting/intelligence, and production integrations appear only in
 the explicitly labeled roadmap section.
+
+## Customer blueprint builder
+
+The separate company website includes a working browser-local planning tool:
+
+| Capability | Status |
+|---|---|
+| Choose product-business operating model | Working |
+| Choose primary workflow pressure | Working |
+| Select the operating modules to connect first | Working |
+| Generate a 90-day Diagnose → Prove → Operate scope | Working |
+| Copy or download the generated blueprint | Working |
+| Submit selections to Altusa or store them remotely | Not included |
+
+This is a planning surface, not a claim that visitors can provision a production
+operations system without implementation, data mapping, controls, and validation.

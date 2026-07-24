@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.join(__dirname, "..");
-const ignoredDirs = new Set([".git", ".firebase", "node_modules"]);
+const ignoredDirs = new Set([".git", ".firebase", ".next", "node_modules", "out"]);
 const ignoredNames = new Set(["package-lock.json"]);
 const forbiddenContent = [
   ["so", "nice"].join(""),
@@ -20,7 +20,7 @@ const forbiddenNames = [
   ["warehouse", "_layout.md"].join(""),
 ];
 const textExtensions = new Set([
-  ".css", ".csv", ".html", ".js", ".json", ".md", ".mjs", ".txt", ".yml", ".yaml"
+  ".css", ".csv", ".html", ".js", ".json", ".md", ".mjs", ".ts", ".tsx", ".txt", ".yml", ".yaml"
 ]);
 const failures = [];
 

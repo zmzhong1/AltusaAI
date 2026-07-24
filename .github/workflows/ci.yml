@@ -25,6 +25,17 @@ jobs:
       - name: Validate demo and public-safety rules
         run: npm run validate
 
+      - name: Install company website dependencies
+        working-directory: website
+        run: npm ci
+
+      - name: Validate Firebase company website
+        working-directory: website
+        run: |
+          npm run lint
+          npm test
+          npm audit --omit=dev
+
       - name: Scan repository history for secrets
         uses: gitleaks/gitleaks-action@v2
         env:
