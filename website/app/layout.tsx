@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description:
     "Altusa connects orders, inventory, warehouse operations, ecommerce, and accounting for product-based small businesses.",
   metadataBase: new URL("https://altusa-ai-company.web.app"),
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
+    shortcut: "/favicon.png",
+    apple: [{ url: "/favicon.png", sizes: "512x512", type: "image/png" }],
+  },
   openGraph: {
     title: "Altusa — Your systems should work like one.",
     description:
